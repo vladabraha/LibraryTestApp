@@ -32,7 +32,7 @@ public class Author {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
+	public int id;
 
 	@Column(name = "author_name")
 	@NotEmpty
