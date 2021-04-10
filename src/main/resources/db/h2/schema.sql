@@ -5,22 +5,34 @@ DROP TABLE genres IF EXISTS;
 DROP TABLE books_genre IF EXISTS;
 
 
-CREATE TABLE vets (
+CREATE TABLE author (
   id         INTEGER IDENTITY PRIMARY KEY,
-  first_name VARCHAR(30),
-  last_name  VARCHAR(30)
+  author_name VARCHAR(300)
 );
-CREATE INDEX vets_last_name ON vets (last_name);
+CREATE INDEX name ON author (author_name);
 
-CREATE TABLE specialties (
+CREATE TABLE author_books (
   id   INTEGER IDENTITY PRIMARY KEY,
-  name VARCHAR(80)
+  author_id INTEGER NOT NULL,
+  book_id INTEGER NOT NULL
 );
-CREATE INDEX specialties_name ON specialties (name);
+-- CREATE INDEX specialties_name ON specialties (name);
 
-CREATE TABLE vet_specialties (
-  vet_id       INTEGER NOT NULL,
-  specialty_id INTEGER NOT NULL
+CREATE TABLE books (
+   id         INTEGER IDENTITY PRIMARY KEY,
+  book_name VARCHAR(300),
+  isbn VARCHAR(300)
+);
+
+CREATE TABLE genres (
+   id         INTEGER IDENTITY PRIMARY KEY,
+  genre_name VARCHAR(300)
+);
+
+create TABLE books_genre (
+  id   INTEGER IDENTITY PRIMARY KEY,
+  genre_id INTEGER NOT NULL,
+  book_id INTEGER NOT NULL
 );
 
 --
