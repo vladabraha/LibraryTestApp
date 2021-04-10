@@ -15,40 +15,36 @@
  */
 package cz.braha.applicanttest.model;
 
-import javax.persistence.Column;
-import javax.persistence.MappedSuperclass;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 
-/**
- * Simple JavaBean domain object representing an person.
- *
- * @author Ken Krebs
- */
-@MappedSuperclass
-public class Person extends BaseEntity {
 
-	@Column(name = "first_name")
+@Entity
+@Table(name = "author")
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+public class Author {
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private int id;
+
+	@Column(name = "author_name")
 	@NotEmpty
-	private String firstName;
+	private String author_name;
 
-	@Column(name = "last_name")
-	@NotEmpty
-	private String lastName;
-
-	public String getFirstName() {
-		return this.firstName;
+	public String getName() {
+		return this.author_name;
 	}
 
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
+	public void setName(String author_name) {
+		this.author_name = author_name;
 	}
 
-	public String getLastName() {
-		return this.lastName;
-	}
-
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
-	}
 
 }
