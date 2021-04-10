@@ -2,6 +2,7 @@ package cz.braha.applicanttest.objects;
 
 import java.util.Set;
 
+@Deprecated
 public class Book {
 
     private String isbn;

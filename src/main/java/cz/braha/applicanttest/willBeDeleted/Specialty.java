@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package cz.braha.applicanttest.vet;
+package cz.braha.applicanttest.willBeDeleted;
 
 import java.io.Serializable;
 

@@ -62,7 +62,7 @@ public class AuthorController implements AuthorEndpoint{
 	}
 
 	@Override
-	public ResponseEntity<Author> updateAuthor(Author author) {
+	public ResponseEntity<Author> updateAuthor(@Valid Author author) {
 		try {
 			Author responseAuthor = authorService.updateAuthor(author);
 			return new ResponseEntity<>(responseAuthor, HttpStatus.OK);
