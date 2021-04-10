@@ -12,41 +12,42 @@ import java.util.Optional;
 @Service("authorService")
 public class AuthorServiceImpl implements AuthorService {
 
-    @Autowired
-    private AuthorRepository AuthorRepository;
+	public static final String AUTHOR_WITH_PROVIDED_ID_DOES_NOT_EXIST = "Author with provided id does not exist";
+	@Autowired
+	private AuthorRepository authorRepository;
 
 	@Override
 	public Author saveAuthor(Author author) {
-		return AuthorRepository.save(author);
+		return authorRepository.save(author);
 	}
 
 	@Override
 	public Author getAuthorById(int id) {
-		Optional<Author> authorOptional = AuthorRepository.findById(id);
+		Optional<Author> authorOptional = authorRepository.findById(id);
 		return authorOptional.orElse(null);
 	}
 
 	@Override
 	public Author updateAuthor(Author author) {
-		Optional<Author> authorOptional = AuthorRepository.findById(author.id);
-		if (!authorOptional.isPresent()){
+		Optional<Author> authorOptional = authorRepository.findById(author.id);
+		if (!authorOptional.isPresent()) {
 			return null;
 		}
-		return AuthorRepository.save(author);
+		return authorRepository.save(author);
 	}
 
 	@Override
 	public List<Author> getAllAuthors() {
-		return AuthorRepository.findAll();
+		return authorRepository.findAll();
 	}
 
 	@Override
 	public void deleteAuthor(int id) {
-		Optional<Author> authorOptional = AuthorRepository.findById(id);
-		if (!authorOptional.isPresent()){
-			throw new DoesNotExist("Author with provided id does not exist");
+		Optional<Author> authorOptional = authorRepository.findById(id);
+		if (!authorOptional.isPresent()) {
+			throw new DoesNotExist(AUTHOR_WITH_PROVIDED_ID_DOES_NOT_EXIST);
 		}
-		AuthorRepository.delete(authorOptional.get());
+		authorRepository.delete(authorOptional.get());
 	}
 
 
@@ -62,7 +63,7 @@ public class AuthorServiceImpl implements AuthorService {
 //        return rulesetRepository.findAll();
 //    }
 
-    // Saves given Ruleset to the DB
+	// Saves given Ruleset to the DB
 
 //    // Deletes Ruleset with given ID
 //    @Override

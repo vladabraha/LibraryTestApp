@@ -11,6 +11,6 @@ public interface AuthorEndpoint {
     List<Author> getAllAuthors(); //todo zde byl set - ma to nejaky duvod?
 	ResponseEntity<Author> findByID(int id);
 	ResponseEntity<Author> createAuthor(Author author);
-    ResponseEntity deleteAuthor(int id); //todo napsat, proč vracím response entity
+    ResponseEntity<Author> deleteAuthor(int id); //todo napsat, proč vracím response entity
 	ResponseEntity<Author> updateAuthor(Author author);
 }

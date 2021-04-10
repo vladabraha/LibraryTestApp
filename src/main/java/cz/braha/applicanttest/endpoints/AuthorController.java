@@ -1,6 +1,7 @@
 package cz.braha.applicanttest.endpoints;
 
 import cz.braha.applicanttest.dtos.AuthorDTO;
+import cz.braha.applicanttest.exceptions.DoesNotExist;
 import cz.braha.applicanttest.model.Author;
 import cz.braha.applicanttest.services.AuthorService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,37 +14,36 @@ import java.util.List;
 
 @RestController
 @CrossOrigin(origins = "*", allowedHeaders = "*")
-public class AuthorController implements AuthorEndpoint{
+public class AuthorController implements AuthorEndpoint {
 
-    private final AuthorService authorService;
+	public static final String NOT_EXISTING_AUTHOR = "Author with this id has not been found";
+	private final AuthorService authorService;
 
-    @Autowired
-    public AuthorController(AuthorService authorService) {
-        this.authorService = authorService;
-    }
+	@Autowired
+	public AuthorController(AuthorService authorService) {
+		this.authorService = authorService;
+	}
 
 
-//    todo java doc
+	//    todo java doc
 	@Override
-    @PostMapping(path = "author")
-    public ResponseEntity<Author> createAuthor(@RequestBody @Valid Author author) {
-        Author authorResponse = authorService.saveAuthor(author);
-        return new ResponseEntity<>(authorResponse, HttpStatus.CREATED);
-    }
+	@PostMapping(path = "author")
+	public ResponseEntity<Author> createAuthor(@RequestBody @Valid Author author) {
+		Author authorResponse = authorService.saveAuthor(author);
+		return new ResponseEntity<>(authorResponse, HttpStatus.CREATED);
+	}
 
 
 	@Override
 	@GetMapping(path = "author")
-	public ResponseEntity<Author> findByID(@RequestBody int id) {
+	public ResponseEntity findByID(@RequestBody int id) throws DoesNotExist {
 		Author author = authorService.getAuthorById(id);
-		if (author != null) {
-			return new ResponseEntity<>(author, HttpStatus.FOUND);
-		}else{
-//		todo zjisti jak pridat zpravu, ze author s danym id neexistuje
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		if (author == null) {
+			return new ResponseEntity<>(NOT_EXISTING_AUTHOR, HttpStatus.NOT_FOUND);
 		}
-
+		return new ResponseEntity<>(author, HttpStatus.FOUND);
 	}
+
 	@Override
 	@GetMapping(path = "allAuthors")
 	public List<Author> getAllAuthors() {
@@ -52,23 +52,25 @@ public class AuthorController implements AuthorEndpoint{
 
 
 	@Override
-	public ResponseEntity deleteAuthor(int id) {
+	@DeleteMapping(path = "deleteAuthor")
+	public ResponseEntity deleteAuthor(@RequestBody int id) {
 		try {
 			authorService.deleteAuthor(id);
 			return new ResponseEntity<>(HttpStatus.OK);
-		}catch (Exception e){
+		} catch (Exception e) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 	}
 
 	@Override
-	public ResponseEntity<Author> updateAuthor(@Valid Author author) {
-		try {
-			Author responseAuthor = authorService.updateAuthor(author);
-			return new ResponseEntity<>(responseAuthor, HttpStatus.OK);
-		}catch (Exception e){
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+	@PutMapping(path = "updateAuthor")
+	public ResponseEntity updateAuthor(@RequestBody @Valid Author author) {
+		Author responseAuthor = authorService.updateAuthor(author);
+		if (responseAuthor == null) {
+			return new ResponseEntity<>(NOT_EXISTING_AUTHOR, HttpStatus.NOT_FOUND);
 		}
+		return new ResponseEntity<>(responseAuthor, HttpStatus.OK);
+
 	}
 
 

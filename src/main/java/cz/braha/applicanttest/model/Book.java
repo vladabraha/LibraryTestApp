@@ -27,7 +27,11 @@ import javax.validation.constraints.NotEmpty;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Book extends BaseEntity {
+public class Book {
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	public int id;
 
 	@Column(name = "name")
 	@NotEmpty
@@ -35,6 +39,17 @@ public class Book extends BaseEntity {
 
 	@Column(name = "isbn")
 	private String isbn;
+
+	@Column(name = "authorId")
+	private int authorId;
+
+	public int getAuthorId() {
+		return authorId;
+	}
+
+	public void setAuthorId(int authorId) {
+		this.authorId = authorId;
+	}
 
 	public String getIsbn() {
 		return isbn;
