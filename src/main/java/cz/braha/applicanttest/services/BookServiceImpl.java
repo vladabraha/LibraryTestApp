@@ -40,7 +40,7 @@ public class BookServiceImpl implements BookService {
 	public void updateBook(Book book) {
 		Optional<Book> bookFromRepository = bookRepository.findById(book.id);
 		if (!bookFromRepository.isPresent()) {
-			return;
+			throw new DoesNotExist("id doesn't exist");
 		}
 		bookRepository.save(book);
 	}

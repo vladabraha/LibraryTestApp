@@ -38,13 +38,6 @@ public class Author {
 	@NotEmpty
 	private String author_name;
 
-	public String getName() {
-		return this.author_name;
-	}
-
-	public void setName(String author_name) {
-		this.author_name = author_name;
-	}
 
 
 }
