@@ -13,6 +13,7 @@ import java.util.Optional;
 public class AuthorServiceImpl implements AuthorService {
 
 	public static final String AUTHOR_WITH_PROVIDED_ID_DOES_NOT_EXIST = "Author with provided id does not exist";
+
 	@Autowired
 	private AuthorRepository authorRepository;
 
@@ -49,31 +50,4 @@ public class AuthorServiceImpl implements AuthorService {
 		}
 		authorRepository.delete(authorOptional.get());
 	}
-
-
-//    // Returns Ruleset by given ID
-//    @Override
-//    public Ruleset findRulesetById(int id) {
-//        return rulesetRepository.findById(id);
-//    }
-//
-//    // Returns list of all Rulesets
-//    @Override
-//    public List<Ruleset> findAllRulesets() {
-//        return rulesetRepository.findAll();
-//    }
-
-	// Saves given Ruleset to the DB
-
-//    // Deletes Ruleset with given ID
-//    @Override
-//    public void deleteById(int id) {
-//        rulesetRepository.deleteById(id);
-//    }
-//
-//    @Override
-//    @Transactional
-//    public void deleteByIdIn(List<Integer> ids) {
-//        rulesetRepository.deleteByIdIn(ids);
-//    }
 }

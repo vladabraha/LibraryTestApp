@@ -1,6 +1,5 @@
 package cz.braha.applicanttest.endpoints;
 
-import cz.braha.applicanttest.dtos.AuthorDTO;
 import cz.braha.applicanttest.exceptions.DoesNotExist;
 import cz.braha.applicanttest.model.Author;
 import cz.braha.applicanttest.services.AuthorService;

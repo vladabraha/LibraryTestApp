@@ -1,10 +1,7 @@
 package cz.braha.applicanttest.services;
 
-import cz.braha.applicanttest.dtos.AuthorDTO;
 import cz.braha.applicanttest.exceptions.DoesNotExist;
-import cz.braha.applicanttest.model.Author;
 import cz.braha.applicanttest.model.Book;
-import cz.braha.applicanttest.repository.AuthorRepository;
 import cz.braha.applicanttest.repository.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -57,7 +54,7 @@ public class BookServiceImpl implements BookService {
 	public void deleteBook(int id) {
 		Optional<Book> bookOptional = bookRepository.findById(id);
 		if (!bookOptional.isPresent()) {
-			throw new DoesNotExist("Book with provided id does not exist");
+			throw new DoesNotExist("Book with provided id: " + id +" does not exist");
 		}
 		bookRepository.delete(bookOptional.get());
 	}

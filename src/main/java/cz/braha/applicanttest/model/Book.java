@@ -20,10 +20,13 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 
-@Entity(name = "books")
+@Entity
+@Table(name = "book")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -33,14 +36,15 @@ public class Book {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	public int id;
 
-	@Column(name = "name")
+	@Column(name = "book_name")
 	@NotEmpty
 	private String name;
 
 	@Column(name = "isbn")
 	private String isbn;
 
-	@Column(name = "authorId")
+	@Column(name = "author_id")
+	@NotNull(message = "Please enter authorId")
 	private int authorId;
 
 	public int getAuthorId() {

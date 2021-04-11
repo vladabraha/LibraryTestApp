@@ -1,9 +1,8 @@
 package cz.braha.applicanttest.endpoints;
 
-import cz.braha.applicanttest.dtos.AuthorDTO;
-import cz.braha.applicanttest.exceptions.DoesNotExist;
 import cz.braha.applicanttest.model.Author;
 import cz.braha.applicanttest.model.Book;
+import cz.braha.applicanttest.services.AuthorService;
 import cz.braha.applicanttest.services.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,92 +17,95 @@ import java.util.List;
 public class BookController implements BookEndpoint {
 
 	public static final String NOT_EXISTING_AUTHOR = "Author with this id has not been found";
+	public static final String BOOK_WITH_THIS_ID_DOESNT_EXIST = "Book with provided id doesn't exist";
+	public static final String BOOK_WITH_THIS_AUTHOR_ID_DOESNT_EXIST = "Book with provided authorId doesn't exist";
+	public static final String BOOK_WITH_THIS_ISBN_DOESNT_EXIST = "Book with provided isbn doesn't exist";
+	public static final String THIS_AUTHOR_DOES_NOT_EXIST_IN_THE_SYSTEM = "This author does not exist in the system";
 	private final BookService bookService;
+	private final AuthorService authorService;
 
 	@Autowired
-	public BookController(BookService bookService) {
+	public BookController(BookService bookService, AuthorService authorService) {
 		this.bookService = bookService;
+		this.authorService = authorService;
 	}
 
 
 	@Override
+	@GetMapping(path = "getAllBooks")
 	public ResponseEntity getAllBooks() {
-		return null;
+		List<Book> allBooks = bookService.getAllBooks();
+		return new ResponseEntity<>(allBooks, HttpStatus.FOUND);
 	}
 
 	@Override
-	public ResponseEntity findByID(Long id) {
-		return null;
+	@GetMapping(path = "findByID")
+	public ResponseEntity findByID(@RequestBody int id) {
+		Book book;
+		try {
+			book = bookService.findByID(id);
+		} catch (Exception e) {
+			return new ResponseEntity<>(BOOK_WITH_THIS_ID_DOESNT_EXIST, HttpStatus.NOT_FOUND);
+		}
+		return new ResponseEntity<>(book, HttpStatus.FOUND);
 	}
 
 	@Override
-	public ResponseEntity findByISBN(String isbn) {
-		return null;
+	@GetMapping(path = "findByISBN")
+	public ResponseEntity findByISBN(@RequestBody String isbn) {
+		Book book;
+		try {
+			book = bookService.findByIsbn(isbn);
+		} catch (Exception e) {
+			return new ResponseEntity<>(BOOK_WITH_THIS_ISBN_DOESNT_EXIST, HttpStatus.NOT_FOUND);
+		}
+		return new ResponseEntity<>(book, HttpStatus.FOUND);
 	}
 
 	@Override
-	public ResponseEntity findByAuthor(Long authorID) {
-		return null;
+	@GetMapping(path = "findByAuthor")
+	public ResponseEntity findByAuthor(@RequestBody int authorID) {
+		Book book;
+		try {
+			book = bookService.findByAuthor(authorID);
+		} catch (Exception e) {
+			return new ResponseEntity<>(BOOK_WITH_THIS_AUTHOR_ID_DOESNT_EXIST, HttpStatus.NOT_FOUND);
+		}
+		return new ResponseEntity<>(book, HttpStatus.FOUND);
 	}
 
 	//    todo java doc
 	@Override
-	@PostMapping(path = "book")
-	public ResponseEntity<Author> createBook(@RequestBody @Valid Book book) {
+	@PostMapping(path = "createBook")
+	public ResponseEntity createBook(@RequestBody @Valid Book book) {
+		Author authorById = authorService.getAuthorById(book.getAuthorId());
+		if (authorById == null){
+			return new ResponseEntity<>(THIS_AUTHOR_DOES_NOT_EXIST_IN_THE_SYSTEM, HttpStatus.NOT_FOUND);
+		}
 		bookService.createBook(book);
 		return new ResponseEntity<>(HttpStatus.CREATED);
 	}
 
 	@Override
-	public ResponseEntity deleteBook(Long id) {
-		return null;
+	@DeleteMapping(path = "deleteBook")
+	public ResponseEntity deleteBook(@RequestBody int id) {
+		try {
+			bookService.deleteBook(id);
+		} catch (Exception e) {
+			return new ResponseEntity<>(BOOK_WITH_THIS_ID_DOESNT_EXIST, HttpStatus.NOT_FOUND);
+		}
+		return new ResponseEntity<>(HttpStatus.OK);
 	}
 
 	@Override
-	public ResponseEntity updateBook(AuthorDTO author) {
-		return null;
+	@PutMapping(path = "updateBook")
+	public ResponseEntity updateBook(@RequestBody @Valid Book book) {
+		try {
+			bookService.updateBook(book);
+		} catch (Exception e) {
+			return new ResponseEntity<>(BOOK_WITH_THIS_ID_DOESNT_EXIST, HttpStatus.NOT_FOUND);
+		}
+		return new ResponseEntity<>(HttpStatus.OK);
 	}
-
-
-//	todo
-//	@Override
-//	@GetMapping(path = "author")
-//	public ResponseEntity findByID(@RequestBody int id) throws DoesNotExist {
-//		Author author = bookService.getAuthorById(id);
-//		if (author == null) {
-//			return new ResponseEntity<>(NOT_EXISTING_AUTHOR, HttpStatus.NOT_FOUND);
-//		}
-//		return new ResponseEntity<>(author, HttpStatus.FOUND);
-//	}
-//
-//	@Override
-//	@GetMapping(path = "allAuthors")
-//	public List<Author> getAllAuthors() {
-//		return bookService.getAllAuthors();
-//	}
-//
-//
-//	@Override
-//	@DeleteMapping(path = "deleteAuthor")
-//	public ResponseEntity deleteAuthor(@RequestBody int id) {
-//		try {
-//			bookService.deleteAuthor(id);
-//			return new ResponseEntity<>(HttpStatus.OK);
-//		} catch (Exception e) {
-//			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-//		}
-//	}
-//
-//	@Override
-//	@PutMapping(path = "updateAuthor")
-//	public ResponseEntity updateAuthor(@RequestBody @Valid Author author) {
-//		Author responseAuthor = bookService.updateAuthor(author);
-//		if (responseAuthor == null) {
-//			return new ResponseEntity<>(NOT_EXISTING_AUTHOR, HttpStatus.NOT_FOUND);
-//		}
-//		return new ResponseEntity<>(responseAuthor, HttpStatus.OK);
-//
-//	}
-
 
 }

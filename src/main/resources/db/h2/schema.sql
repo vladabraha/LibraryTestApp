@@ -11,14 +11,8 @@ CREATE TABLE author (
 );
 CREATE INDEX name ON author (author_name);
 
-CREATE TABLE author_books (
-  id   INTEGER IDENTITY PRIMARY KEY,
-  author_id INTEGER NOT NULL,
-  book_id INTEGER NOT NULL
-);
--- CREATE INDEX specialties_name ON specialties (name);
 
-CREATE TABLE books (
+CREATE TABLE book (
    id         INTEGER IDENTITY PRIMARY KEY,
   book_name VARCHAR(300),
   isbn VARCHAR(300),
