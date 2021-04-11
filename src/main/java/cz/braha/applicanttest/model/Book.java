@@ -41,35 +41,13 @@ public class Book {
 	private String name;
 
 	@Column(name = "isbn", unique = true)
+	@NotEmpty
 	private String isbn;
 
 	@Column(name = "author_id")
 	@NotNull(message = "Please enter authorId")
 	private int authorId;
 
-	public int getAuthorId() {
-		return authorId;
-	}
-
-	public void setAuthorId(int authorId) {
-		this.authorId = authorId;
-	}
-
-	public String getIsbn() {
-		return isbn;
-	}
-
-	public void setIsbn(String isbn) {
-		this.isbn = isbn;
-	}
-
-	public String getName() {
-		return this.name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
 
 
 }

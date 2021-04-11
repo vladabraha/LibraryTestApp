@@ -33,14 +33,14 @@ public class BookController implements BookEndpoint {
 
 	@Override
 	@GetMapping(path = "getAllBooks")
-	public ResponseEntity getAllBooks() {
+	public ResponseEntity<?> getAllBooks() {
 		List<Book> allBooks = bookService.getAllBooks();
 		return new ResponseEntity<>(allBooks, HttpStatus.FOUND);
 	}
 
 	@Override
 	@GetMapping(path = "findByID")
-	public ResponseEntity findByID(@RequestBody int id) {
+	public ResponseEntity<?> findByID(@RequestBody int id) {
 		Book book;
 		try {
 			book = bookService.findByID(id);
@@ -52,7 +52,7 @@ public class BookController implements BookEndpoint {
 
 	@Override
 	@GetMapping(path = "findByISBN")
-	public ResponseEntity findByISBN(@RequestBody String isbn) {
+	public ResponseEntity<?> findByISBN(@RequestBody String isbn) {
 		Book book = bookService.findByIsbn(isbn);
 		if (book == null) {
 			return new ResponseEntity<>(BOOK_WITH_THIS_ISBN_DOESNT_EXIST, HttpStatus.NOT_FOUND);
@@ -63,7 +63,7 @@ public class BookController implements BookEndpoint {
 
 	@Override
 	@GetMapping(path = "findByAuthor")
-	public ResponseEntity findByAuthor(@RequestBody int authorID) {
+	public ResponseEntity<?> findByAuthor(@RequestBody int authorID) {
 		Author authorById = authorService.getAuthorById(authorID);
 		if (authorById == null){
 			return new ResponseEntity<>(BOOK_WITH_THIS_AUTHOR_ID_DOESNT_EXIST, HttpStatus.NOT_FOUND);
@@ -80,7 +80,7 @@ public class BookController implements BookEndpoint {
 
 	@Override
 	@PostMapping(path = "createBook")
-	public ResponseEntity createBook(@RequestBody @Valid Book book) {
+	public ResponseEntity<?> createBook(@RequestBody @Valid Book book) {
 		//validate incoming book
 		if (bookService.findByIsbn(book.getIsbn()) != null ){
 			return new ResponseEntity<>(THIS_ISBN_ALREADY_EXIST_IN_THE_SYSTEM, HttpStatus.NOT_FOUND);
@@ -95,7 +95,7 @@ public class BookController implements BookEndpoint {
 
 	@Override
 	@DeleteMapping(path = "deleteBook")
-	public ResponseEntity deleteBook(@RequestBody int id) {
+	public ResponseEntity<?> deleteBook(@RequestBody int id) {
 		try {
 			bookService.deleteBook(id);
 		} catch (Exception e) {
@@ -106,7 +106,7 @@ public class BookController implements BookEndpoint {
 
 	@Override
 	@PutMapping(path = "updateBook")
-	public ResponseEntity updateBook(@RequestBody @Valid Book book) {
+	public ResponseEntity<?> updateBook(@RequestBody @Valid Book book) {
 		try {
 			bookService.updateBook(book);
 		} catch (Exception e) {

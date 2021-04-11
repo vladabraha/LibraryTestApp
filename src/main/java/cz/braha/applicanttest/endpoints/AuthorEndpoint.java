@@ -4,12 +4,10 @@ package cz.braha.applicanttest.endpoints;
 import cz.braha.applicanttest.model.Author;
 import org.springframework.http.ResponseEntity;
 
-import java.util.List;
-
 public interface AuthorEndpoint {
-    List<Author> getAllAuthors();
-	ResponseEntity<Author> findByID(int id);
-	ResponseEntity<Author> createAuthor(Author author);
-    ResponseEntity<Author> deleteAuthor(int id);
-	ResponseEntity<Author> updateAuthor(Author author);
+    ResponseEntity<?> getAllAuthors();
+	ResponseEntity<?> findByID(int id);
+	ResponseEntity<?> createAuthor(Author author);
+    ResponseEntity<?> deleteAuthor(int id);
+	ResponseEntity<?> updateAuthor(Author author);
 }
