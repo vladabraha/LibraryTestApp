@@ -44,10 +44,11 @@ public class Book {
 	@NotEmpty
 	private String isbn;
 
+	@Column(name = "genre")
+	private String genre; //todo mělo by to být jedna z enumu, nebo jak to bylo zamýšleno?
+
 	@Column(name = "author_id")
 	@NotNull(message = "Please enter authorId")
 	private int authorId;
-
-
 
 }

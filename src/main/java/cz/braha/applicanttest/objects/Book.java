@@ -10,6 +10,5 @@ public class Book {
 
     private Set<BookGenre> genres;
 
-    private Set<Book> books; //todo jaky je zde význam knih v knihách?
-
+    private Set<Book> books;
 }

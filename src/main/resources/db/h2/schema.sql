@@ -16,6 +16,7 @@ CREATE TABLE book (
    id         INTEGER IDENTITY PRIMARY KEY,
   book_name VARCHAR(300),
   isbn VARCHAR(300),
+  genre VARCHAR(300),
   author_id INTEGER
 );
 

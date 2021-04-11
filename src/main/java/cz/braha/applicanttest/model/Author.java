@@ -15,12 +15,14 @@
  */
 package cz.braha.applicanttest.model;
 
+import cz.braha.applicanttest.objects.Book;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
+import java.util.Set;
 
 
 @Entity
@@ -38,6 +40,8 @@ public class Author {
 	@NotEmpty
 	private String author_name;
 
+//	fixme případná vícevazební tabulka by měla být řešena skrze relační tabulku. Při současném návrhu je možné zjistit autorovy knihy z tabulky books
+//	private Set<Book> books;
 
 
 }
