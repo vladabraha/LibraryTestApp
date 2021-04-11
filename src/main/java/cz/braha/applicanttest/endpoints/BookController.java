@@ -21,6 +21,8 @@ public class BookController implements BookEndpoint {
 	public static final String BOOK_WITH_THIS_ISBN_DOESNT_EXIST = "Book with provided isbn doesn't exist";
 	public static final String THIS_AUTHOR_DOES_NOT_EXIST_IN_THE_SYSTEM = "This author does not exist in the system";
 	public static final String THIS_ISBN_ALREADY_EXIST_IN_THE_SYSTEM = "This isbn already exist in the system";
+	public static final String UNKNOWN_ERROR = "Unknown error";
+	public static final String BOOK_WITH_THIS_ID_DOES_NOT_EXIST = "Book with this id does not exist";
 	private final BookService bookService;
 	private final AuthorService authorService;
 
@@ -41,23 +43,27 @@ public class BookController implements BookEndpoint {
 	@Override
 	@GetMapping(path = "findByID")
 	public ResponseEntity<?> findByID(@RequestBody int id) {
-		Book book;
-		try {
-			book = bookService.findByID(id);
-		} catch (Exception e) {
-			return new ResponseEntity<>(BOOK_WITH_THIS_ID_DOESNT_EXIST, HttpStatus.NOT_FOUND);
+		Book book = bookService.findByID(id);
+		if (book == null) {
+			return new ResponseEntity<>(BOOK_WITH_THIS_ID_DOES_NOT_EXIST, HttpStatus.NOT_FOUND);
+		} else {
+			return new ResponseEntity<>(book, HttpStatus.FOUND);
 		}
-		return new ResponseEntity<>(book, HttpStatus.FOUND);
+
 	}
 
 	@Override
 	@GetMapping(path = "findByISBN")
 	public ResponseEntity<?> findByISBN(@RequestBody String isbn) {
-		Book book = bookService.findByIsbn(isbn);
-		if (book == null) {
-			return new ResponseEntity<>(BOOK_WITH_THIS_ISBN_DOESNT_EXIST, HttpStatus.NOT_FOUND);
-		} else {
-			return new ResponseEntity<>(book, HttpStatus.FOUND);
+		try {
+			Book book = bookService.findByIsbn(isbn);
+			if (book == null) {
+				return new ResponseEntity<>(BOOK_WITH_THIS_ISBN_DOESNT_EXIST, HttpStatus.NOT_FOUND);
+			} else {
+				return new ResponseEntity<>(book, HttpStatus.FOUND);
+			}
+		} catch (Exception e) {
+			return new ResponseEntity<>(UNKNOWN_ERROR, HttpStatus.NOT_ACCEPTABLE);
 		}
 	}
 
@@ -82,15 +88,19 @@ public class BookController implements BookEndpoint {
 	@PostMapping(path = "createBook")
 	public ResponseEntity<?> createBook(@RequestBody @Valid Book book) {
 		//validate incoming book
-		if (bookService.findByIsbn(book.getIsbn()) != null ){
-			return new ResponseEntity<>(THIS_ISBN_ALREADY_EXIST_IN_THE_SYSTEM, HttpStatus.NOT_FOUND);
-		}
-		if (authorService.getAuthorById(book.getAuthorId()) == null){
-			return new ResponseEntity<>(THIS_AUTHOR_DOES_NOT_EXIST_IN_THE_SYSTEM, HttpStatus.NOT_FOUND);
-		}
+		try {
+			if (bookService.findByIsbn(book.getIsbn()) != null ){
+				return new ResponseEntity<>(THIS_ISBN_ALREADY_EXIST_IN_THE_SYSTEM, HttpStatus.NOT_FOUND);
+			}
+			if (authorService.getAuthorById(book.getAuthorId()) == null){
+				return new ResponseEntity<>(THIS_AUTHOR_DOES_NOT_EXIST_IN_THE_SYSTEM, HttpStatus.NOT_FOUND);
+			}
 
-		bookService.createBook(book);
-		return new ResponseEntity<>(HttpStatus.CREATED);
+			bookService.createBook(book);
+			return new ResponseEntity<>(HttpStatus.CREATED);
+		} catch (Exception e) {
+			return new ResponseEntity<>(UNKNOWN_ERROR, HttpStatus.NOT_ACCEPTABLE);
+		}
 	}
 
 	@Override
