@@ -7,7 +7,7 @@ import org.springframework.http.ResponseEntity;
 import java.util.List;
 
 public interface AuthorEndpoint {
-    List<Author> getAllAuthors(); //todo zde byl set - ma to nejaky duvod?
+    List<Author> getAllAuthors();
 	ResponseEntity<Author> findByID(int id);
 	ResponseEntity<Author> createAuthor(Author author);
     ResponseEntity<Author> deleteAuthor(int id);

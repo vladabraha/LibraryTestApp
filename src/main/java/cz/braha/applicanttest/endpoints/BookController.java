@@ -21,6 +21,7 @@ public class BookController implements BookEndpoint {
 	public static final String BOOK_WITH_THIS_AUTHOR_ID_DOESNT_EXIST = "Book with provided authorId doesn't exist";
 	public static final String BOOK_WITH_THIS_ISBN_DOESNT_EXIST = "Book with provided isbn doesn't exist";
 	public static final String THIS_AUTHOR_DOES_NOT_EXIST_IN_THE_SYSTEM = "This author does not exist in the system";
+	public static final String THIS_ISBN_ALREADY_EXIST_IN_THE_SYSTEM = "This isbn already exist in the system";
 	private final BookService bookService;
 	private final AuthorService authorService;
 
@@ -53,35 +54,42 @@ public class BookController implements BookEndpoint {
 	@Override
 	@GetMapping(path = "findByISBN")
 	public ResponseEntity findByISBN(@RequestBody String isbn) {
-		Book book;
-		try {
-			book = bookService.findByIsbn(isbn);
-		} catch (Exception e) {
+		Book book = bookService.findByIsbn(isbn);
+		if (book == null) {
 			return new ResponseEntity<>(BOOK_WITH_THIS_ISBN_DOESNT_EXIST, HttpStatus.NOT_FOUND);
+		} else {
+			return new ResponseEntity<>(book, HttpStatus.FOUND);
 		}
-		return new ResponseEntity<>(book, HttpStatus.FOUND);
 	}
 
 	@Override
 	@GetMapping(path = "findByAuthor")
 	public ResponseEntity findByAuthor(@RequestBody int authorID) {
-		Book book;
+		Author authorById = authorService.getAuthorById(authorID);
+		if (authorById == null){
+			return new ResponseEntity<>(BOOK_WITH_THIS_AUTHOR_ID_DOESNT_EXIST, HttpStatus.NOT_FOUND);
+		}
+		List<Book> books;
 		try {
-			book = bookService.findByAuthor(authorID);
+			books = bookService.findByAuthor(authorID);
 		} catch (Exception e) {
 			return new ResponseEntity<>(BOOK_WITH_THIS_AUTHOR_ID_DOESNT_EXIST, HttpStatus.NOT_FOUND);
 		}
-		return new ResponseEntity<>(book, HttpStatus.FOUND);
+		return new ResponseEntity<>(books, HttpStatus.FOUND);
 	}
 
-	//    todo java doc
+
 	@Override
 	@PostMapping(path = "createBook")
 	public ResponseEntity createBook(@RequestBody @Valid Book book) {
-		Author authorById = authorService.getAuthorById(book.getAuthorId());
-		if (authorById == null){
+		//validate incoming book
+		if (bookService.findByIsbn(book.getIsbn()) != null ){
+			return new ResponseEntity<>(THIS_ISBN_ALREADY_EXIST_IN_THE_SYSTEM, HttpStatus.NOT_FOUND);
+		}
+		if (authorService.getAuthorById(book.getAuthorId()) == null){
 			return new ResponseEntity<>(THIS_AUTHOR_DOES_NOT_EXIST_IN_THE_SYSTEM, HttpStatus.NOT_FOUND);
 		}
+
 		bookService.createBook(book);
 		return new ResponseEntity<>(HttpStatus.CREATED);
 	}

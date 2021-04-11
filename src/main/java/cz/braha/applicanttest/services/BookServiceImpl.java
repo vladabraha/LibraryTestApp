@@ -32,7 +32,7 @@ public class BookServiceImpl implements BookService {
 	}
 
 	@Override
-	public Book findByAuthor(int authorID) {
+	public List<Book> findByAuthor(int authorID) {
 		return bookRepository.findByAuthorId(authorID);
 	}
 

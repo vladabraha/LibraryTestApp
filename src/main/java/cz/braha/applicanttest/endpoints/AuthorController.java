@@ -23,7 +23,6 @@ public class AuthorController implements AuthorEndpoint {
 		this.authorService = authorService;
 	}
 
-
 	//    todo java doc
 	@Override
 	@PostMapping(path = "author")

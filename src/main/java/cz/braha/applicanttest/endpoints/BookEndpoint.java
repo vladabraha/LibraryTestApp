@@ -5,7 +5,7 @@ import org.springframework.http.ResponseEntity;
 
 public interface BookEndpoint {
 	ResponseEntity getAllBooks();
-	ResponseEntity findByID(int id); //todo vracim response entity, bylo dto
+	ResponseEntity findByID(int id);
 	ResponseEntity findByISBN(String isbn);
 	ResponseEntity findByAuthor(int authorID);
 

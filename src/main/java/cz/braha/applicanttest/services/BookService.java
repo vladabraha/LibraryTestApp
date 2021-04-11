@@ -9,7 +9,7 @@ public interface BookService {
 	List<Book> getAllBooks();
 	Book findByID(int id);
 	Book findByIsbn(String isbn);
-	Book findByAuthor(int authorID);
+	List<Book> findByAuthor(int authorID);
 
 	void createBook(Book book);
 	void deleteBook(int id);
