@@ -16,7 +16,6 @@ import java.util.List;
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 public class BookController implements BookEndpoint {
 
-	public static final String NOT_EXISTING_AUTHOR = "Author with this id has not been found";
 	public static final String BOOK_WITH_THIS_ID_DOESNT_EXIST = "Book with provided id doesn't exist";
 	public static final String BOOK_WITH_THIS_AUTHOR_ID_DOESNT_EXIST = "Book with provided authorId doesn't exist";
 	public static final String BOOK_WITH_THIS_ISBN_DOESNT_EXIST = "Book with provided isbn doesn't exist";
