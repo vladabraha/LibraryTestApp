@@ -89,10 +89,10 @@ public class BookController implements BookEndpoint {
 	public ResponseEntity<?> createBook(@RequestBody @Valid Book book) {
 		//validate incoming book
 		try {
-			if (bookService.findByIsbn(book.getIsbn()) != null ){
+			if (bookService.findByIsbn(book.isbn) != null ){
 				return new ResponseEntity<>(THIS_ISBN_ALREADY_EXIST_IN_THE_SYSTEM, HttpStatus.NOT_FOUND);
 			}
-			if (authorService.getAuthorById(book.getAuthorId()) == null){
+			if (authorService.getAuthorById(book.authorId) == null){
 				return new ResponseEntity<>(THIS_AUTHOR_DOES_NOT_EXIST_IN_THE_SYSTEM, HttpStatus.NOT_FOUND);
 			}
 

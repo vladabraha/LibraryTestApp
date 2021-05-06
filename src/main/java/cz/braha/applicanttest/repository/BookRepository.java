@@ -17,5 +17,4 @@ public interface BookRepository extends JpaRepository<Book, Integer> {
 
     void deleteById(int id);
 
-    void deleteByIdIn(List<Integer> ids);
 }

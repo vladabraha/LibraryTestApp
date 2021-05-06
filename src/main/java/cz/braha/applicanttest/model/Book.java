@@ -17,7 +17,9 @@ package cz.braha.applicanttest.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.web.bind.annotation.GetMapping;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -38,17 +40,17 @@ public class Book {
 
 	@Column(name = "book_name")
 	@NotEmpty
-	private String name;
+	public String name;
 
 	@Column(name = "isbn", unique = true)
 	@NotEmpty
-	private String isbn;
+	public String isbn;
 
 	@Column(name = "genre")
-	private String genre; //todo mělo by to být jedna z enumu, nebo jak to bylo zamýšleno?
+	public String genre; //todo mělo by to být jedna z enumu, nebo jak to bylo zamýšleno?
 
 	@Column(name = "author_id")
 	@NotNull(message = "Please enter authorId")
-	private int authorId;
+	public int authorId;
 
 }
